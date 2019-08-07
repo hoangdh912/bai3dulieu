@@ -19,19 +19,27 @@
 
  	<div class="container">
  		<div class="row">
- 			<div class="card-columns">
-			    <div class="card">
-				    <img class="card-img-top img-fluid" src="http://placehold.it/400x400" alt="Card image cap">
-				    <div class="card-body">
-				      <h5 class="card-title name">Hoang</h5>
-				      <p class="card-text age">Age:30</p>
-				      <p class="card-text phone">Phone:123456789</p>
-				      <p class="card-text order-number">Completed orders number</p>
-				      <p class="card-text linkfb"><small><a href="#linkfb" class="btn btn-info btn-xs">Facebook</a></small></p>
-				      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-				    </div>
-			    </div>
-			</div> <!-- End card columns -->
+
+
+				<?php foreach ($resultData as $result): ?>
+				<div class="col-sm-4">
+					<div class="card">
+					    <img class="card-img-top img-fluid" src="<?php echo $result['avatar']; ?>" alt="Card image cap">
+					    <div class="card-body">
+					      <h5 class="card-title name"><?php echo $result['name']; ?></h5>
+					      <p class="card-text age">Age: <?php echo $result['age']; ?></p>
+					      <p class="card-text phone">Phone: <?php echo $result['phone']; ?></p>
+					      <p class="card-text order-number">Completed orders number: <?php echo $result['order_number']; ?></p>
+					      <p class="card-text linkfb"><small><a href="<?php echo $result['linkfb']; ?>" class="btn btn-info btn-xs">Facebook</a></small></p>
+					      <p class="card-text edit"><small><a href="<?php echo base_url(); ?>index.php/staff/staff_edit/<?php echo $result['id']; ?>" class="btn btn-warning btn-xs">Edit staff</a></small></p>
+					      <p class="card-text delete"><small><a href="<?php echo base_url(); ?>index.php/staff/staff_delete/<?php echo $result['id']; ?>" class="btn btn-danger btn-xs">Delete staff</a></small></p>
+					    </div>
+			    	</div> <!-- End card -->
+				</div>
+			    
+
+			    <?php endforeach ?>
+
  		</div>
 		
 		<div class="container">
@@ -41,7 +49,7 @@
  		</div>
 
 
- 			<form method="post" enctype="multipart/form-data" action="<?php base_url() ?>staff/staff_add">
+ 			<form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/staff/staff_add">
 			  <div class="form-group row">
 			    <label for="avatar" class="col-sm-4 form-control-label text-xs-right" >Avatar Image</label>
 			    <div class="col-sm-8 text-xs-center">
