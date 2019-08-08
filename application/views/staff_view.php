@@ -5,10 +5,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
- 	<script type="text/javascript" src="1.js"></script>
+ 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>vendor/font-awesome.css">
- 	<link rel="stylesheet" href="1.css">
+	<script type="text/javascript" src="<?php echo base_url(); ?>vendor/jquery.fileupload.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>vendor/jquery.ui.widget.js"></script>
 </head>
 <body >
  	<div class="container">
@@ -18,7 +19,7 @@
  	</div>
 
  	<div class="container">
- 		<div class="row">
+ 		<div class="row" id="content">
 
 
 				<?php foreach ($resultData as $result): ?>
@@ -49,7 +50,7 @@
  		</div>
 
 
- 			<form method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>index.php/staff/staff_add">
+ 			<!-- <form method="post" enctype="multipart/form-data" action="<?php //echo base_url(); ?>index.php/staff/staff_add"> -->
 			  <div class="form-group row">
 			    <label for="avatar" class="col-sm-4 form-control-label text-xs-right" >Avatar Image</label>
 			    <div class="col-sm-8 text-xs-center">
@@ -92,14 +93,65 @@
 			    </div>
 			  </div>	
 
-			  <button type="submit" class="btn btn-outline-success">Add new</button>
+			  <button type="button" class="btn btn-outline-success ajaxbutton">Add new</button>
 
-			</form>
-
-
- 		
+			<!-- </form> -->
 
  	</div>
+	
+	<script>
+
+		$('.ajaxbutton').click(function(event) {
+			$.ajax({
+			url: 'staff/ajax_add',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				name: $('#name').val(),
+				age: $('#age').val(),
+				phone: $('#phone').val(),
+				linkfb: $('#linkfb').val(),
+				order_number: $('#order_number').val()
+			},
+			})
+			.done(function() {
+				console.log("success");
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				
+				content = '<div class="col-sm-4">';
+				content += '<div class="card">';
+				content += '<img class="card-img-top img-fluid" src="https://images5.alphacoders.com/587/587597.jpg" alt="Card image cap">';
+				content += '<div class="card-body">';
+				content += '<h5 class="card-title name">Name: '+ $('#name').val() + '</h5>';
+				content += '<p class="card-text age">Age: '+ $('#age').val() + '</p>';
+				content += '<p class="card-text phone">Phone: '+ $('#phone').val() + '</p>';
+				content += '<p class="card-text order-number">Completed orders number: '+ $('#order_number').val() + '</p>';
+				content += '<p class="card-text linkfb"><small><a href="'+ $('#linkfb').val() + '" class="btn btn-info btn-xs">Facebook</a></small></p>';
+				content += '<p class="card-text edit"><small><a href="<?php echo base_url(); ?>index.php/staff/staff_edit/<?php echo $result['id']; ?>" class="btn btn-warning btn-xs">Edit staff</a></small></p>';
+				content += '<p class="card-text delete"><small><a href="<?php echo base_url(); ?>index.php/staff/staff_delete/<?php echo $result['id']; ?>" class="btn btn-danger btn-xs">Delete staff</a></small></p>';
+				content += '</div>';
+				content += '</div> <!-- End card -->';
+				content += '</div>';
+				
+				$('#content').append(content);
+				//Reset form
+				name: $('#name').val();
+				age: $('#age').val();
+				phone: $('#phone').val();
+				linkfb: $('#linkfb').val();
+				order_number: $('#order_number').val();
+				
+			});
+
+		});
+
+		
+		
+	</script>
 
 </body>
 </html>

@@ -185,6 +185,27 @@ class Staff extends CI_Controller {
 			echo "Failed";
 		}
 	}
+
+	public function ajax_add()
+	{
+		//Get data from view
+		$name = $this->input->post('name');
+		$age = $this->input->post('age');
+		$phone = $this->input->post('phone');
+		$order_number = $this->input->post('order_number');
+		$linkfb = $this->input->post('linkfb');
+		$avatar = 'https://images5.alphacoders.com/587/587597.jpg';
+
+		//Put data to model
+		$this->load->model('staff_model');
+		if($this->staff_model->insert($name, $age, $phone, $avatar, $linkfb, $order_number))
+		{
+			echo "Successful";
+		} else {
+			echo "Failed";
+		}
+	}
+
 }
 
 /* End of file staff.php */

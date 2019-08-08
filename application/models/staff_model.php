@@ -29,6 +29,7 @@ class staff_model extends CI_Model {
 	public function getAll()
 	{
 		$this->db->select('*');
+		$this->db->order_by('id', 'asc');
 		$data = $this->db->get('staff');
 		$data = $data->result_array();
 		return $data;
