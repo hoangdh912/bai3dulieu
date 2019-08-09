@@ -1,5 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+include('jqueryUpload/server/php/UploadHandler.php');
+
 class Staff extends CI_Controller {
 
 	public function __construct()
@@ -192,10 +194,10 @@ class Staff extends CI_Controller {
 		$name = $this->input->post('name');
 		$age = $this->input->post('age');
 		$phone = $this->input->post('phone');
+		$avatar = $this->input->post('avatar');
 		$order_number = $this->input->post('order_number');
 		$linkfb = $this->input->post('linkfb');
-		$avatar = 'https://images5.alphacoders.com/587/587597.jpg';
-
+		
 		//Put data to model
 		$this->load->model('staff_model');
 		if($this->staff_model->insert($name, $age, $phone, $avatar, $linkfb, $order_number))
@@ -204,6 +206,11 @@ class Staff extends CI_Controller {
 		} else {
 			echo "Failed";
 		}
+	}
+
+	public function uploadFile()
+	{
+		$uploadFile = new UploadHandler();
 	}
 
 }

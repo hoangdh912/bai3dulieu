@@ -8,10 +8,10 @@
  	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>vendor/font-awesome.css">
-	<script type="text/javascript" src="<?php echo base_url(); ?>vendor/jquery.fileupload.js"></script>
-	<script type="text/javascript" src="<?php echo base_url(); ?>vendor/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>jqueryUpload/js/vendor/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>jqueryUpload/js/jquery.fileupload.js"></script>
 </head>
-<body >
+<body>
  	<div class="container">
  		<div class="text-xs-center">
  			<h3 class="dislay-3">Staff list</h3>
@@ -52,9 +52,9 @@
 
  			<!-- <form method="post" enctype="multipart/form-data" action="<?php //echo base_url(); ?>index.php/staff/staff_add"> -->
 			  <div class="form-group row">
-			    <label for="avatar" class="col-sm-4 form-control-label text-xs-right" >Avatar Image</label>
+			    <label for="files[]" class="col-sm-4 form-control-label text-xs-right" >Avatar Image</label>
 			    <div class="col-sm-8 text-xs-center">
-			    	<input type="file" name="avatar" class="form-control" id="avatar" placeholder="Upload image">
+			    	<input type="file" name="files[]" class="form-control" id="avatar" placeholder="Upload image">
 			    </div>
 			  </div>
 
@@ -101,15 +101,28 @@
 	
 	<script>
 
+		link = '<?php echo base_url(); ?>';
+
+		$('#avatar').fileupload({
+        dataType: 'json',
+        url: link + 'index.php/staff/uploadFile',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                filename = file.url;
+            });
+        	}
+    	});
+
 		$('.ajaxbutton').click(function(event) {
 			$.ajax({
-			url: 'staff/ajax_add',
+			url: link + 'index.php/staff/ajax_add',
 			type: 'POST',
 			dataType: 'json',
 			data: {
 				name: $('#name').val(),
 				age: $('#age').val(),
 				phone: $('#phone').val(),
+				avatar: filename,
 				linkfb: $('#linkfb').val(),
 				order_number: $('#order_number').val()
 			},
@@ -124,7 +137,7 @@
 				
 				content = '<div class="col-sm-4">';
 				content += '<div class="card">';
-				content += '<img class="card-img-top img-fluid" src="https://images5.alphacoders.com/587/587597.jpg" alt="Card image cap">';
+				content += '<img class="card-img-top img-fluid" src="'+ filename +'" alt="Card image cap">';
 				content += '<div class="card-body">';
 				content += '<h5 class="card-title name">Name: '+ $('#name').val() + '</h5>';
 				content += '<p class="card-text age">Age: '+ $('#age').val() + '</p>';
@@ -139,11 +152,11 @@
 				
 				$('#content').append(content);
 				//Reset form
-				name: $('#name').val();
-				age: $('#age').val();
-				phone: $('#phone').val();
-				linkfb: $('#linkfb').val();
-				order_number: $('#order_number').val();
+				// name: $('#name').val();
+				// age: $('#age').val();
+				// phone: $('#phone').val();
+				// linkfb: $('#linkfb').val();
+				// order_number: $('#order_number').val();
 				
 			});
 
